@@ -1,0 +1,14 @@
+#main-box {
+  width: 858px;
+  height: 100%;
+  position: relative;
+}
+* {
+  box-sizing: border-box;
+  font-family: monospace;
+  color: white;
+}
+.p {
+  color: blue;
+  font-family: monospace;
+}
