@@ -1,13 +1,41 @@
 #main-box {
-  width: 858px;
+  width: 859px;
   height: 100%;
+  background-image: url(./images/dungeon-door.jpeg);
   position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 * {
   box-sizing: border-box;
   font-family: monospace;
+  background-color: darkslategray;
 }
-.p {
-  color: blue;
-  font-family: monospace;
+
+#picture {
+  max-width: 861px;
+  height: 500px;
+  border: solid 1px white;
+  top: 20%;
+  margin: 0 auto;
+}
+#text-content {
+  margin-top: 20px;
+  padding: 20px;
+  width: 860px;
+  border: 1px solid white;
+  background: #0c1a36;
+  opacity: 0.5;
+  margin: 20px auto;
+  color: white;
+  font-size: large;
+}
+#health-bar {
+  border: solid 1px black;
+}
+#text-description {
+  margin-top: 5px;
+}
+p {
+  border: 1px solid white;
 }

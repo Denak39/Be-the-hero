@@ -39,11 +39,11 @@ const items = {
 
 let scenario = {
   start: {
-    steps: ["dungeonDoor", "gameover"],
-    description: "start game",
+    steps: ["dungeonDoor"],
+    description: "",
   },
   dungeonDoor: {
-    steps: ["hallway"],
+    steps: ["hallway", "gameover"],
     description:
       "Here you are, in front of the dungeon’s door. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place. No easy task, considering he is the mightiest creature of this world. You think to yourself there must be an easier way to make money...",
   },
@@ -108,6 +108,21 @@ function setNextStep(next) {
 
 startGame();
 drawStep(game);
+
+// faire un for loop (i) avec 1/2/3 pr paramétrer mes nextsteps
+function changeRoom() {
+  for (let step = 0; step < 5; step++) {
+    // Runs 5 times, with values of step 0 through 4.
+    if (step === 1) {
+      return setNextStep(1);
+    } else if (step === 2) {
+      return setNextStep(2);
+    } else {
+      return setNextStep(3);
+    }
+  }
+}
+// if (currentStep === startGame(game) => setNextStep()
 /*
 setTimeout(() => {
   setNextStep(0);
