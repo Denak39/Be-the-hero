@@ -1,64 +1,135 @@
-let game = {
-  start: {
-    steps: ["dungeonDoor"],
-    description:
-      "Here you are, in front of the dungeon’s door. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place. No easy task, considering he is the mightiest creature of this world. You think to yourself there must be an easier way to make money...",
-  },
-  player: {
-    health: 100,
-  },
-  hallway: {
-    steps: ["goblin", "kitchenLabo", "start"],
-  },
-  goblin: {
-    health: 10,
-  },
-  kitchenLabo: {
-    steps: ["golem", "bedroom", "start"],
-  },
-  golem: {
-    health: 20,
-  },
-  bedroom: {
-    steps: ["minautor", "bossRoom", "start"],
-  },
-  minotaur: {
-    health: 50,
-  },
-  end: {
-    steps: ["finalBoss", "start"],
-  },
-  finalBoss: {
-    health: 75,
-  },
+const currentRoomElement = document.getElementById("current-room");
+
+const player = {
+  health: 100,
+  name: "default player",
+  diceSides: 6,
+};
+
+const goblin = {
+  health: 10,
+  name: "spear goblin",
+  diceSides: 3,
+};
+
+const golem = {
+  health: 20,
+  name: "buffed golem",
+  diceSides: 4,
+};
+
+const minotaur = {
+  health: 50,
+  name: "scary minotaur",
+  diceSides: 5,
+};
+
+const ainz = {
+  health: 75,
+  name: "Lord Ainz Ooal Gown",
+  diceSides: 6,
+};
+
+const items = {
   potion: {
     health: 15,
     amount: 0,
   },
 };
 
-game["kitchenLabo"].steps[1];
+let scenario = {
+  start: {
+    steps: ["dungeonDoor", "gameover"],
+    description: "start game",
+  },
+  dungeonDoor: {
+    steps: ["hallway"],
+    description:
+      "Here you are, in front of the dungeon’s door. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place. No easy task, considering he is the mightiest creature of this world. You think to yourself there must be an easier way to make money...",
+  },
+  gameover: {
+    steps: [],
+    description:
+      "you died! You let down king Maverick, and the kingdom. Your memory will fade into darkness, and your name will remain a fainting echo in the everlasting eternity",
+  },
+  hallway: {
+    ennemy: goblin,
+    description:
+      "You push the door and a long corridor appears in front of you. There isn’t much light, you can barely see. You walk slowly, trying to look for traps. Suddenly, you hear laughters, but not the usual friendly banter you hear at the tavern. These laughters are evil.... GOBLINS! You draw your sword instinctively. You don’t have much time to react, what do you do?",
+    steps: ["goblin", "kitchenLabo", "gameover"],
+  },
+  kitchenLabo: {
+    ennemy: golem,
+    description:
+      "The goblin drowning in its own intestines, you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing golem is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.",
+    steps: ["golem", "bedroom", "gameover"],
+  },
+  bedroom: {
+    ennemy: minotaur,
+    description:
+      "The weird golem scientist dead, you proceed through the only door of the room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
+    steps: ["minautor", "bossRoom", "gameover"],
+  },
+  bossRoom: {
+    ennemy: ainz,
+    description:
+      "Right after defeating the minotaur, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+    steps: ["ainz", "gameover", "end"],
+  },
+  end: {
+    steps: [],
+  },
+};
 
-console.log(game);
+let currentStep;
+let game;
 
-function rollDicePlayer() {
-  return 1 + Math.floor(Math.random() * 6);
+//console.log(game);
+
+function startGame() {
+  currentStep = "start";
+  game = scenario[currentStep];
 }
-function rollDiceGoblin() {
-  return 1 + Math.floor(Math.random() * 3);
+
+function drawStep() {
+  console.log("current game infos");
+  console.log(game);
+  currentRoomElement.innerHTML = "";
+  currentRoomElement.innerHTML += "<p>" + game.description + "</p>";
 }
-function rollDiceGolem() {
-  return 1 + Math.floor(Math.random() * 4);
+
+function setNextStep(next) {
+  //console.log("current Step ?", currentStep);
+  //console.log(game.description);
+  if (game.ennemy) console.log(game.ennemy);
+  currentStep = scenario[currentStep].steps[next];
+  game = scenario[currentStep];
 }
-function rollDiceMinotaur() {
-  return 1 + Math.floor(Math.random() * 5);
+
+startGame();
+drawStep(game);
+/*
+setTimeout(() => {
+  setNextStep(0);
+  drawStep(game);
+  setTimeout(() => {
+    setNextStep(0);
+    drawStep(game);
+    setTimeout(() => {
+      setNextStep(0);
+      drawStep(game);
+    }, 5000);
+  }, 5000);
+}, 5000);
+*/
+
+function rollDice(diceSides) {
+  return 1 + Math.floor(Math.random() * diceSides);
 }
-function rollDiceFinalBoss() {
-  return 1 + Math.floor(Math.random() * 6);
-}
-function dodge() {
-  return 1 + Math.floor(Math.random() * 20);
-}
+
+const dodge = () => rollDice(20);
+
+/*
 function dodgeGoblin() {
   if (parseFloat(dodge()) > 16) {
     console.log("You dodged");
@@ -72,12 +143,12 @@ function attackGoblin() {
   if (game.goblin.health <= 0) {
     console.log("it's dead");
   } else {
-    game.goblin.health -= parseFloat(rollDicePlayer());
+    game.goblin.health -= parseFloat(rollDice(6));
     if (game.goblin.health <= 0) {
       game.potion.amount += 1;
       leaveRoom.innerHTML = button;
     } else {
-      game.player.health -= parseFloat(rollDiceGoblin());
+      game.player.health -= parseFloat(rollDice(goblin.diceSides));
       if (game.player.health <= 0) {
         Swal.fire('<button href="die.html">Game Over</button>');
       }
@@ -96,11 +167,4 @@ function drinkPotion() {
   console.log(game.player.health);
 }
 
-function changeRoom() {
-  let boss = ["game.goblin", "game.minotaur", "game.finalBoss", "game.golem"];
-  if (boss.health <= 0) {
-    return changeRoom;
-  } else {
-    return rollDice;
-  }
-}
+*/
