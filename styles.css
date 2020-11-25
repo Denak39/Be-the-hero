@@ -5,7 +5,9 @@
   position: relative;
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: bottom;
 }
+
 * {
   box-sizing: border-box;
   font-family: monospace;
