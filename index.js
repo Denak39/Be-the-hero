@@ -1,3 +1,4 @@
+// import { player } from "./data/player";
 const currentRoomElement = document.getElementById("current-room");
 const currentImage = document.getElementById("main-box");
 
@@ -175,14 +176,32 @@ function drawStep() {
       })
   );
 }
+function attachLink(classname, fctn) {
+  const buttons = currentRoomElement.getElementsByClassName(classname);
+  for (const button of buttons) {
+    button.onclick = function (event) {
+      fctn();
+    };
+  }
+}
+// mettre à jour
+function updateText(classname, text) {
+  const buttons = currentRoomElement.getElementsByClassName(classname);
+  for (const button of buttons) {
+    button.innerHTML = text;
+  }
+}
 
 function fight(ennemy) {
   console.log(game.ennemy);
   currentRoomElement.innerHTML = "";
   currentRoomElement.innerHTML += "<p>" + ennemy.description + "</p>";
-  currentImage.innerHTML = "";
-  currentImage.innerHTML = game.ennemy.image;
+  currentImage.style.backgroundImage = "url(./" + game.ennemy.image + ")";
   console.log(game.ennemy.image);
+  currentRoomElement.innerHTML += '<div class="fightResult"></div>';
+  currentRoomElement.innerHTML +=
+    '<button class="attackGoblin">Attack</button>';
+  attachLink("attackGoblin", attackGoblin);
 }
 
 function setNextStep(next) {
@@ -199,21 +218,7 @@ function changeRoom(currentStep) {
   game = scenario[currentStep];
   drawStep();
 }
-// if (currentStep === startGame(game) => setNextStep()
-/*
-setTimeout(() => {
-  setNextStep(0);
-  drawStep(game);
-  setTimeout(() => {
-    setNextStep(0);
-    drawStep(game);
-    setTimeout(() => {
-      setNextStep(0);
-      drawStep(game);
-    }, 5000);
-  }, 5000);
-}, 5000);
-*/
+
 let bedr0om = document.getElementById("bedroom");
 bedr0om.style.display = "none";
 
@@ -233,22 +238,21 @@ function dodgeGoblin() {
 function attackGoblin() {
   let leaveRoom = document.getElementById("goblinRoom");
   let button = '<button href="kitchenLab.html">Test</button>';
-  if (goblin.health <= 0) {
-    console.log("it's dead");
-  } else {
-    goblin.health -= parseFloat(rollDice(6));
-    if (goblin.health <= 0) {
-      potion.amount += 1;
-      leaveRoom.innerHTML = button;
-    } else {
-      player.health -= parseFloat(rollDice(goblin.diceSides));
-      if (player.health <= 0) {
-        Swal.fire('<button href="die.html">Game Over</button>');
-      }
-    }
+  const playerDice = parseFloat(rollDice(6));
+  const ennemyDice = parseFloat(rollDice(goblin.diceSides));
+  goblin.health -= playerDice;
+  player.health -= ennemyDice;
+  if (player.health <= 0) {
+    Swal.fire("<button>Game Over</button>");
   }
-  console.log(goblin.health);
-  console.log(items.potion.amount);
+  let text = `You dealt ${playerDice} damage<br>
+  You received ${ennemyDice} damage`;
+  if (goblin.health <= 0) {
+    text += "The goblin is dead";
+    items.potion.amount += 1;
+    leaveRoom.innerHTML = button;
+  }
+  updateText("fightResult", text);
 }
 
 function drinkPotion() {
