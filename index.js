@@ -20,18 +20,24 @@ const golem = {
   health: 20,
   name: "buffed golem",
   diceSides: 4,
+  description:
+    "You rush the golem, your sword drawn out. It turns to face you and slams the ground. The fight begins...",
 };
 
 const minotaur = {
   health: 50,
   name: "scary minotaur",
   diceSides: 5,
+  description:
+    "The minotaur's roar echoes throughout the room. it's not going to be an easy fight.",
 };
 
 const ainz = {
   health: 75,
   name: "Lord Ainz Ooal Gown",
   diceSides: 6,
+  description:
+    "The Overlord approaches. You can feel his murderous aura overwhelming you.",
 };
 
 const items = {
@@ -60,7 +66,7 @@ let scenario = {
   gameover: {
     steps: [{ display: "Restart game", goTo: "start" }],
     description:
-      "you died! You let down king Maverick, and the kingdom. Your memory will fade into darkness, and your name will remain a fainting echo in the everlasting eternity",
+      "you failed! You let down king Maverick, and the kingdom. Your memory will fade into darkness, and your name will remain a fainting echo in the everlasting eternity",
     image: "./images/gameover.png",
   },
   hallway: {
@@ -81,7 +87,7 @@ let scenario = {
       { display: "Fight", goTo: "Fight" },
       { display: "Try to sneak past the golem", goTo: "bedroom2" },
     ],
-    image: "images/Laboratory.jpg",
+    image: "images/Laboratory.jpeg",
   },
   kitchenLabo2: {
     ennemy: golem,
@@ -91,7 +97,7 @@ let scenario = {
       { display: "Fight", goTo: "Fight" },
       { display: "Try to sneak past the golem", goTo: "bedroom2" },
     ],
-    image: "images/Laboratory.jpg",
+    image: "images/Laboratory.jpeg",
   },
   bedroom: {
     ennemy: minotaur,
@@ -101,7 +107,7 @@ let scenario = {
       { display: "Fight", goTo: "Fight" },
       { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
     ],
-    image: "",
+    image: "./images/bedroom.jpg",
   },
   bedroom2: {
     ennemy: minotaur,
@@ -111,13 +117,14 @@ let scenario = {
       { display: "Fight", goTo: "Fight" },
       { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
     ],
-    image: "",
+    image: "./images/bedroom.jpg",
   },
   bossRoom: {
     ennemy: ainz,
     description:
       "Right after defeating the minotaur, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: ["ainz", "gameover", "end"],
+    image: "",
   },
   bossRoom2: {
     ennemy: ainz,
@@ -134,7 +141,7 @@ let scenario = {
 var menuTheme = new Audio();
 
 menuTheme.src = "./Sound/Skyrim.mp3";
-menuTheme.volume = 0;
+menuTheme.volume = 0.2;
 menuTheme.play();
 
 let currentStep;
@@ -169,11 +176,16 @@ function drawStep() {
   );
 }
 
-function fight(ennemy) {}
+function fight(ennemy) {
+  console.log(game.ennemy);
+  currentRoomElement.innerHTML = "";
+  currentRoomElement.innerHTML += "<p>" + ennemy.description + "</p>";
+  currentImage.innerHTML = "";
+  currentImage.innerHTML = game.ennemy.image;
+  console.log(game.ennemy.image);
+}
 
 function setNextStep(next) {
-  //console.log("current Step ?", currentStep);
-  //console.log(game.description);
   if (game.ennemy) console.log(game.ennemy);
   currentStep = scenario[currentStep].steps[next];
   game = scenario[currentStep];
@@ -186,16 +198,6 @@ drawStep(game);
 function changeRoom(currentStep) {
   game = scenario[currentStep];
   drawStep();
-  // for (let i = 0; i < 5; i++) {
-  //   // Runs 5 times, with values of step 0 through 4.
-  //   if (step === 1) {
-  //     return setNextStep(1);
-  //   } else if (step === 2) {
-  //     return setNextStep(2);
-  //   } else {
-  //     return setNextStep(3);
-  //   }
-  // }
 }
 // if (currentStep === startGame(game) => setNextStep()
 /*
@@ -213,7 +215,7 @@ setTimeout(() => {
 }, 5000);
 */
 let bedr0om = document.getElementById("bedroom");
-bedroom.style.display = "none";
+bedr0om.style.display = "none";
 
 function rollDice(diceSides) {
   return 1 + Math.floor(Math.random() * diceSides);
