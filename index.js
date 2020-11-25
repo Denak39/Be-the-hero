@@ -1,6 +1,7 @@
 // import { player } from "./data/player";
 const currentRoomElement = document.getElementById("current-room");
 const currentImage = document.getElementById("main-box");
+const hp = document.getElementsByClassName("health-bar");
 
 const player = {
   health: 100,
@@ -12,6 +13,7 @@ const goblin = {
   health: 10,
   name: "spear goblin",
   diceSides: 3,
+  dodgeSide: 16,
   description:
     "The goblin approaches menacingly, seems like he wants a taste of your sword!",
   image: "./images/goblin.jpeg",
@@ -21,6 +23,7 @@ const golem = {
   health: 20,
   name: "buffed golem",
   diceSides: 4,
+  dodgeSide: 17,
   description:
     "You rush the golem, your sword drawn out. It turns to face you and slams the ground. The fight begins...",
 };
@@ -29,6 +32,7 @@ const minotaur = {
   health: 50,
   name: "scary minotaur",
   diceSides: 5,
+  dodgeSide: 19,
   description:
     "The minotaur's roar echoes throughout the room. it's not going to be an easy fight.",
 };
@@ -164,7 +168,6 @@ function drawStep() {
   currentRoomElement.innerHTML += "<p>" + game.description + "</p>";
   game.steps.forEach((step) => {
     currentRoomElement.innerHTML += `<button name= ${step.goTo}>${step.display}</button>`;
-    // bedr0om.style.display = "true";
   });
   const buttons = currentRoomElement.querySelectorAll("button");
   buttons.forEach(
@@ -193,15 +196,22 @@ function updateText(classname, text) {
 }
 
 function fight(ennemy) {
-  console.log(game.ennemy);
-  currentRoomElement.innerHTML = "";
-  currentRoomElement.innerHTML += "<p>" + ennemy.description + "</p>";
-  currentImage.style.backgroundImage = "url(./" + game.ennemy.image + ")";
-  console.log(game.ennemy.image);
-  currentRoomElement.innerHTML += '<div class="fightResult"></div>';
-  currentRoomElement.innerHTML +=
-    '<button class="attackGoblin">Attack</button>';
-  attachLink("attackGoblin", attackGoblin);
+  if (game.ennemy.health > 0) {
+    console.log(game.ennemy);
+    currentRoomElement.innerHTML = "";
+    currentRoomElement.innerHTML += "<p>" + ennemy.description + "</p>";
+    currentImage.style.backgroundImage = "url(./" + game.ennemy.image + ")";
+    console.log(game.ennemy.image);
+    currentRoomElement.innerHTML += '<div class="fightResult"></div>';
+    currentRoomElement.innerHTML +=
+      '<button id="atkbtn" class="attackGoblin">Attack</button>';
+    let atkbtn = document.getElementById("atkbtn");
+    attachLink("attackGoblin", attackGoblin);
+    console.log(atkbtn);
+  } else {
+    currentRoomElement.innerHTML += "<button>Continue</button>";
+    console.log(atkbtn);
+  }
 }
 
 function setNextStep(next) {
@@ -213,14 +223,13 @@ function setNextStep(next) {
 startGame();
 drawStep(game);
 
-// faire un for loop (i) avec 1/2/3 pr paramétrer mes nextsteps
 function changeRoom(currentStep) {
   game = scenario[currentStep];
   drawStep();
 }
 
-let bedr0om = document.getElementById("bedroom");
-bedr0om.style.display = "none";
+let fightbtns = document.getElementById("fight");
+fightbtns.style.display = "none";
 
 function rollDice(diceSides) {
   return 1 + Math.floor(Math.random() * diceSides);
@@ -228,32 +237,39 @@ function rollDice(diceSides) {
 
 const dodge = () => rollDice(20);
 
-function dodgeGoblin() {
-  if (parseFloat(dodge()) > 16) {
+function dodgeGoblin(dodgeSide) {
+  if (parseFloat(dodge()) > dodgeSide) {
     console.log("You dodged");
   } else {
-    Swal.fire("You need to attack the goblin");
+    Swal.fire("You need to attack");
   }
 }
+
 function attackGoblin() {
-  let leaveRoom = document.getElementById("goblinRoom");
-  let button = '<button href="kitchenLab.html">Test</button>';
   const playerDice = parseFloat(rollDice(6));
-  const ennemyDice = parseFloat(rollDice(goblin.diceSides));
+  const ennemyDice = parseFloat(rollDice(game.ennemy.diceSides));
   goblin.health -= playerDice;
   player.health -= ennemyDice;
   if (player.health <= 0) {
-    Swal.fire("<button>Game Over</button>");
+    return scenario.gameover;
+    // Swal.fire("<button>Game Over</button>");
   }
   let text = `You dealt ${playerDice} damage<br>
   You received ${ennemyDice} damage`;
   if (goblin.health <= 0) {
-    text += "The goblin is dead";
+    text = "You defeated your opponent";
     items.potion.amount += 1;
-    leaveRoom.innerHTML = button;
+    atkbtn.style.display = "none";
+    currentRoomElement.innerHTML +=
+      '<button id="continuebtn">Continue</button>';
   }
   updateText("fightResult", text);
 }
+
+// function continue() {
+//   if (game.ennemy.health <= 0) {
+//   }
+// }
 
 function drinkPotion() {
   if (items.potion.amount > 0) {
