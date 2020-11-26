@@ -1,7 +1,10 @@
 // import { player } from "./data/player";
 const currentRoomElement = document.getElementById("current-room");
 const currentImage = document.getElementById("main-box");
-
+// const health = {
+//   goblin: 10,
+//   golem: 20,
+// };
 const player = {
   health: 100,
   name: "default player",
@@ -9,6 +12,7 @@ const player = {
 };
 
 const goblin = {
+  // health: health.goblin,
   health: 10,
   name: "Spear goblin",
   diceSides: 3,
@@ -167,15 +171,15 @@ function startGame() {
   currentStep = "start";
   game = scenario[currentStep];
 }
-// function endgame, to reset hp
-// function endGame() {
-//   if (game == gameover) {
-//     player.health === 100;
-//   }
-// }
 
 function drawStep() {
   currentImage.style.backgroundImage = "url(./" + game.image + ")";
+  const hp = document.getElementById("health-bar");
+  if (currentStep !== "start") {
+    hp.innerHTML = "<span>" + player.health + " player hp left" + "</span>";
+  } else {
+    hp.innerHTML = "";
+  }
   currentRoomElement.innerHTML = "";
   currentRoomElement.innerHTML += "<p>" + game.description + "</p>";
   game.steps.forEach((step) => {
@@ -188,13 +192,22 @@ function drawStep() {
         const isSneakbtn = event.target.innerText.includes("Try to sneak past");
         if (event.target.name === "Fight") {
           fight(game.ennemy);
+        } else if (event.target.name === "start") {
+          player.health = 100;
+          goblin.health = 10;
+          golem.health = 20;
+          minotaur.health = 50;
+          ainz.health = 70;
+          changeRoom(event.target.name);
         } else if (isSneakbtn) {
           if (dodgeGoblin(game.ennemy.dodgeSide)) {
             changeRoom(event.target.name);
           } else {
             fight(game.ennemy);
           }
-        } else changeRoom(event.target.name);
+        } else {
+          changeRoom(event.target.name);
+        }
       })
   );
 }
@@ -227,7 +240,6 @@ function fight(ennemy) {
       '<button id="atkbtn" class="attackGoblin"><i class="fas fa-dice-six fa-4x"></i></button>';
     let atkbtn = document.getElementById("atkbtn");
     attachLink("attackGoblin", attackGoblin);
-  } else {
   }
 }
 
