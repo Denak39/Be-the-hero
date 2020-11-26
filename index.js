@@ -5,12 +5,12 @@ const currentImage = document.getElementById("main-box");
 const player = {
   health: 100,
   name: "default player",
-  diceSides: 60,
+  diceSides: 6,
 };
 
 const goblin = {
   health: 10,
-  name: "spear goblin",
+  name: "Spear goblin",
   diceSides: 3,
   dodgeSide: 16,
   description:
@@ -20,17 +20,17 @@ const goblin = {
 
 const golem = {
   health: 20,
-  name: "buffed golem",
+  name: "Buffed golem",
   diceSides: 4,
   dodgeSide: 17,
   description:
-    "You rush the golem, your sword drawn out. It turns to face you and slams the ground. The fight begins...",
+    "The golem suddenly turns to face you and slams the ground. The fight begins...",
   image: "./images/golem.jpeg",
 };
 
 const minotaur = {
   health: 50,
-  name: "scary minotaur",
+  name: "Scary minotaur",
   diceSides: 5,
   dodgeSide: 19,
   description:
@@ -73,7 +73,7 @@ let scenario = {
   gameover: {
     steps: [{ display: "Restart game", goTo: "start" }],
     description:
-      "you failed! You let down king Maverick, and the kingdom. Your memory will fade into darkness, and your name will remain a fainting echo in the everlasting eternity",
+      "You failed! You let down king Maverick, and the kingdom. Your memory will fade into darkness, and your name will remain a fainting echo in the everlasting eternity",
     image: "./images/gameover.png",
   },
   hallway: {
@@ -266,18 +266,21 @@ function attackGoblin() {
   game.ennemy.health -= playerDice;
   player.health -= ennemyDice;
   if (player.health <= 0) {
-    return game.scenario.gameover;
-    // Swal.fire("<button>Game Over</button>");
+    console.log(scenario.over);
+    currentRoomElement.innerHTML += `<button name="gameover" id="continuebtn">Continue</button>`;
+    document.getElementById("continuebtn").onclick = function (event) {
+      changeRoom(event.target.name);
+    };
+    atkbtn.style.display = "none";
   }
   let text = `You dealt ${playerDice} damage<br>
-  ${game.ennemy} has ${game.ennemy.health} health remaining<br>
+  ${game.ennemy.name} has ${game.ennemy.health} health remaining<br>
   You received ${ennemyDice} damage<br>
   You have ${player.health} health remaining`;
   if (game.ennemy.health <= 0) {
     text = "You defeated your opponent";
     items.potion.amount += 1;
     atkbtn.style.display = "none";
-
     currentRoomElement.innerHTML += `<button name="${game.steps[0].onFinish}" id="continuebtn">Continue</button>`;
     document.getElementById("continuebtn").onclick = function (event) {
       changeRoom(event.target.name);
