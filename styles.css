@@ -27,6 +27,7 @@
   width: 860px;
   border: 1px solid white;
   background: #0c1a36;
+  opacity: 0.7;
   margin: 20px auto;
   color: white;
   font-size: large;
@@ -44,6 +45,7 @@ button {
   display: flex;
   margin-left: auto;
   margin-right: auto;
+  color: white;
 }
 #atkbtn {
   border: 0;
