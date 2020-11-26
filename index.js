@@ -79,7 +79,7 @@ let scenario = {
     description:
       "You push the door and a long corridor appears in front of you. There isn’t much light, you can barely see. You walk slowly, trying to look for traps. Suddenly, you hear laughters, but not the usual friendly banter you hear at the tavern. These laughters are evil.... GOBLINS! You draw your sword instinctively. You don’t have much time to react, what do you do?",
     steps: [
-      { display: "Fight", goTo: "Fight" },
+      { display: "Fight", goTo: "Fight", onFinish: "kitchenLabo" },
       { display: "Try to sneak past the goblin", goTo: "kitchenLabo2" },
     ],
     image: "images/Hallway.jpg",
@@ -89,7 +89,7 @@ let scenario = {
     description:
       "The goblin drowning in its own intestines, you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing golem is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.",
     steps: [
-      { display: "Fight", goTo: "Fight" },
+      { display: "Fight", goTo: "Fight", onFinish: "bedroom" },
       { display: "Try to sneak past the golem", goTo: "bedroom2" },
     ],
     image: "images/Laboratory.jpeg",
@@ -99,7 +99,7 @@ let scenario = {
     description:
       "You sneak past the goblin while he is staring at a fire and you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing golem is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.",
     steps: [
-      { display: "Fight", goTo: "Fight" },
+      { display: "Fight", goTo: "Fight", onFinish: "bedroom" },
       { display: "Try to sneak past the golem", goTo: "bedroom2" },
     ],
     image: "images/Laboratory.jpeg",
@@ -109,7 +109,7 @@ let scenario = {
     description:
       "The weird golem scientist dead, you proceed through the only door of the room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
     steps: [
-      { display: "Fight", goTo: "Fight" },
+      { display: "Fight", goTo: "Fight", onFinish: "bossRoom" },
       { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
     ],
     image: "./images/bedroom.jpg",
@@ -119,7 +119,7 @@ let scenario = {
     description:
       "You proceed to carefully cross the room while sticking to the walls. You manage to reach the next room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
     steps: [
-      { display: "Fight", goTo: "Fight" },
+      { display: "Fight", goTo: "Fight", onFinish: "bossRoom" },
       { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
     ],
     image: "./images/bedroom.jpg",
@@ -127,14 +127,14 @@ let scenario = {
   bossRoom: {
     ennemy: ainz,
     description:
-      "Right after defeating the minotaur, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+      "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: ["ainz", "gameover", "end"],
     image: "",
   },
   bossRoom2: {
     ennemy: ainz,
     description:
-      "Right after defeating the minotaur, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+      "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Fight", goTo: "Fight" }],
     image: "",
   },
@@ -151,6 +151,7 @@ menuTheme.play();
 
 let currentStep;
 let game;
+let afterFight;
 
 console.log(scenario.start);
 
@@ -160,13 +161,13 @@ function startGame() {
 }
 
 function drawStep() {
-  console.log("current game infos");
-  console.log(game);
-
   currentImage.style.backgroundImage = "url(./" + game.image + ")";
   currentRoomElement.innerHTML = "";
   currentRoomElement.innerHTML += "<p>" + game.description + "</p>";
   game.steps.forEach((step) => {
+    if ("Fight" === step.goTo) {
+      afterFight = step.onFinish;
+    }
     currentRoomElement.innerHTML += `<button name= ${step.goTo}>${step.display}</button>`;
   });
   const buttons = currentRoomElement.querySelectorAll("button");
@@ -179,6 +180,7 @@ function drawStep() {
       })
   );
 }
+
 function attachLink(classname, fctn) {
   const buttons = currentRoomElement.getElementsByClassName(classname);
   for (const button of buttons) {
@@ -207,24 +209,25 @@ function fight(ennemy) {
       '<button id="atkbtn" class="attackGoblin">Attack</button>';
     let atkbtn = document.getElementById("atkbtn");
     attachLink("attackGoblin", attackGoblin);
-    console.log(atkbtn);
   } else {
     currentRoomElement.innerHTML += "<button>Continue</button>";
-    console.log(atkbtn);
   }
 }
 
-function setNextStep(next) {
-  if (game.ennemy) console.log(game.ennemy);
-  currentStep = scenario[currentStep].steps[next];
-  game = scenario[currentStep];
-}
+/*
+  function setNextStep(next) {
+    //if (game.ennemy) console.log(game.ennemy);
+    currentStep = scenario[currentStep].steps[next];
+    game = scenario[currentStep];
+  }
+   */
 
 startGame();
 drawStep(game);
 
-function changeRoom(currentStep) {
-  game = scenario[currentStep];
+function changeRoom(newStep) {
+  game = scenario[newStep];
+  currentStep = newStep;
   drawStep();
 }
 
@@ -246,12 +249,12 @@ function dodgeGoblin(dodgeSide) {
 }
 
 function attackGoblin() {
-  const playerDice = parseFloat(rollDice(6));
-  const ennemyDice = parseFloat(rollDice(game.ennemy.diceSides));
+  const playerDice = parseFloat(rollDice(player.diceSides));
+  const ennemyDice = parseFloat(rollDice(goblin.diceSides));
   goblin.health -= playerDice;
   player.health -= ennemyDice;
   if (player.health <= 0) {
-    return scenario.gameover;
+    return game.scenario.gameover;
     // Swal.fire("<button>Game Over</button>");
   }
   let text = `You dealt ${playerDice} damage<br>
@@ -260,8 +263,12 @@ function attackGoblin() {
     text = "You defeated your opponent";
     items.potion.amount += 1;
     atkbtn.style.display = "none";
+
     currentRoomElement.innerHTML +=
-      '<button id="continuebtn">Continue</button>';
+      '<button name="bedroom" id="continuebtn">Continue</button>';
+    document.getElementById("continuebtn").onclick = function () {
+      changeRoom(afterFight);
+    };
   }
   updateText("fightResult", text);
 }
