@@ -1,7 +1,6 @@
 // import { player } from "./data/player";
 const currentRoomElement = document.getElementById("current-room");
 const currentImage = document.getElementById("main-box");
-const hp = document.getElementsByClassName("health-bar");
 
 const player = {
   health: 100,
@@ -26,6 +25,7 @@ const golem = {
   dodgeSide: 17,
   description:
     "You rush the golem, your sword drawn out. It turns to face you and slams the ground. The fight begins...",
+  image: "./images/golem.jpeg",
 };
 
 const minotaur = {
@@ -35,6 +35,7 @@ const minotaur = {
   dodgeSide: 19,
   description:
     "The minotaur's roar echoes throughout the room. it's not going to be an easy fight.",
+  image: "./images/minotaur.jpeg",
 };
 
 const ainz = {
@@ -80,7 +81,11 @@ let scenario = {
       "You push the door and a long corridor appears in front of you. There isn’t much light, you can barely see. You walk slowly, trying to look for traps. Suddenly, you hear laughters, but not the usual friendly banter you hear at the tavern. These laughters are evil.... GOBLINS! You draw your sword instinctively. You don’t have much time to react, what do you do?",
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "kitchenLabo" },
-      { display: "Try to sneak past the goblin", goTo: "kitchenLabo2" },
+      {
+        display: "Try to sneak past the goblin",
+        goTo: "kitchenLabo2",
+        onFinish: "dodge",
+      },
     ],
     image: "images/Hallway.jpg",
   },
@@ -128,15 +133,15 @@ let scenario = {
     ennemy: ainz,
     description:
       "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
-    steps: ["ainz", "gameover", "end"],
-    image: "",
+    steps: [{ display: "Continue", goTo: "Fight", onFinish: "end" }],
+    image: "./images/bedroom.jpg",
   },
   bossRoom2: {
     ennemy: ainz,
     description:
-      "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+      "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Fight", goTo: "Fight" }],
-    image: "",
+    image: "./images/bedroom.jpg",
   },
   end: {
     steps: [],
@@ -165,17 +170,21 @@ function drawStep() {
   currentRoomElement.innerHTML = "";
   currentRoomElement.innerHTML += "<p>" + game.description + "</p>";
   game.steps.forEach((step) => {
-    if ("Fight" === step.goTo) {
-      afterFight = step.onFinish;
-    }
     currentRoomElement.innerHTML += `<button name= ${step.goTo}>${step.display}</button>`;
   });
   const buttons = currentRoomElement.querySelectorAll("button");
   buttons.forEach(
     (button) =>
       (button.onclick = function (event) {
+        const isSneakbtn = event.target.innerText.includes("Try to sneak past");
         if (event.target.name === "Fight") {
           fight(game.ennemy);
+        } else if (isSneakbtn) {
+          if (dodgeGoblin(game.ennemy.dodgeSide)) {
+            changeRoom(event.target.name);
+          } else {
+            fight(game.ennemy);
+          }
         } else changeRoom(event.target.name);
       })
   );
@@ -242,24 +251,28 @@ const dodge = () => rollDice(20);
 
 function dodgeGoblin(dodgeSide) {
   if (parseFloat(dodge()) > dodgeSide) {
-    console.log("You dodged");
+    console.log("dodged");
+    return true;
   } else {
-    Swal.fire("You need to attack");
+    console.log("not dodged");
+    return false;
   }
 }
 
 function attackGoblin() {
   const playerDice = parseFloat(rollDice(player.diceSides));
-  const ennemyDice = parseFloat(rollDice(goblin.diceSides));
-  goblin.health -= playerDice;
+  const ennemyDice = parseFloat(rollDice(game.ennemy.diceSides));
+  game.ennemy.health -= playerDice;
   player.health -= ennemyDice;
   if (player.health <= 0) {
     return game.scenario.gameover;
     // Swal.fire("<button>Game Over</button>");
   }
   let text = `You dealt ${playerDice} damage<br>
-  You received ${ennemyDice} damage`;
-  if (goblin.health <= 0) {
+  ${game.ennemy} has ${game.ennemy.health} health remaining<br>
+  You received ${ennemyDice} damage<br>
+  You have ${player.health} health remaining`;
+  if (game.ennemy.health <= 0) {
     text = "You defeated your opponent";
     items.potion.amount += 1;
     atkbtn.style.display = "none";
@@ -286,3 +299,6 @@ function drinkPotion() {
   console.log(items.potion.amount);
   console.log(player.health);
 }
+// CHECK WHY ITS NOT UPDATING
+// const hp = document.getElementById("health-bar");
+// hp.innerHTML = `${game.player.health}`;
