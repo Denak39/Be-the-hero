@@ -46,6 +46,18 @@ button {
   margin-left: auto;
   margin-right: auto;
 }
-button #atkbtn {
-  display: none;
+#atkbtn {
+  border: 0;
+  /* background: url("./images/dice.gif") no-repeat; */
+
+  /* height: 50px;
+  width: 50px; */
+}
+.fas fa-dice-six {
+  height: 50px;
+  width: 50px;
+}
+h1 {
+  text-align: center;
+  color: white;
 }

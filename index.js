@@ -3,7 +3,7 @@ const currentRoomElement = document.getElementById("current-room");
 const currentImage = document.getElementById("main-box");
 
 const player = {
-  health: 100,
+  health: 120,
   name: "default player",
   diceSides: 6,
 };
@@ -39,7 +39,7 @@ const minotaur = {
 };
 
 const ainz = {
-  health: 75,
+  health: 70,
   name: "Lord Ainz Ooal Gown",
   diceSides: 6,
   description:
@@ -139,13 +139,15 @@ let scenario = {
   bossRoom2: {
     ennemy: ainz,
     description:
-      "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+      "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br></br>-'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Fight", goTo: "Fight" }],
     image: "./images/throne.jpg",
   },
   end: {
-    description: "gratz",
+    description:
+      "After hours of battle, you finally manage to put the Overlord on his knees. He looks up to you as if he had been waiting for this moment his whole life. With a swift hit, you put an end to his reign of terror. Now all that's left to do is return to king Maverick to claim your price and glory.",
     steps: [{ display: "Restart game", goTo: "start" }],
+    image: "./images/gratz.jpg",
   },
 };
 
@@ -216,7 +218,7 @@ function fight(ennemy) {
     console.log(game.ennemy.image);
     currentRoomElement.innerHTML += '<div class="fightResult"></div>';
     currentRoomElement.innerHTML +=
-      '<button id="atkbtn" class="attackGoblin">Attack</button>';
+      '<button id="atkbtn" class="attackGoblin"><i class="fas fa-dice-six fa-4x"></i></button>';
     let atkbtn = document.getElementById("atkbtn");
     attachLink("attackGoblin", attackGoblin);
   } else {
@@ -265,8 +267,10 @@ function attackGoblin() {
   const ennemyDice = parseFloat(rollDice(game.ennemy.diceSides));
   game.ennemy.health -= playerDice;
   player.health -= ennemyDice;
+  const hp = document.getElementById("health-bar");
+  hp.innerHTML = "<span>" + player.health + "hp left" + "</span>";
+  // console.log(player.health);
   if (player.health <= 0) {
-    console.log(scenario.over);
     currentRoomElement.innerHTML += `<button name="gameover" id="continuebtn">Continue</button>`;
     document.getElementById("continuebtn").onclick = function (event) {
       changeRoom(event.target.name);
@@ -303,5 +307,3 @@ function drinkPotion() {
   console.log(player.health);
 }
 // CHECK WHY ITS NOT UPDATING
-// const hp = document.getElementById("health-bar");
-// hp.innerHTML = `${game.player.health}`;
