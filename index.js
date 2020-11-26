@@ -12,7 +12,7 @@ const goblin = {
   health: 10,
   name: "Spear goblin",
   diceSides: 3,
-  dodgeSide: 16,
+  dodgeSide: 17,
   description:
     "The goblin approaches menacingly, seems like he wants a taste of your sword!",
   image: "./images/goblin.jpeg",
@@ -22,7 +22,7 @@ const golem = {
   health: 20,
   name: "Buffed golem",
   diceSides: 4,
-  dodgeSide: 17,
+  dodgeSide: 18,
   description:
     "The golem suddenly turns to face you and slams the ground. The fight begins...",
   image: "./images/golem.jpeg",
@@ -125,21 +125,21 @@ let scenario = {
       "You proceed to carefully cross the room while sticking to the walls. You manage to reach the next room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "bossRoom" },
-      { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
+      { display: "Try to sneak past the minotaur", goTo: "bossRoom2" },
     ],
     image: "./images/bedroom.jpg",
   },
   bossRoom: {
     ennemy: ainz,
     description:
-      "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+      "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br>-'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Continue", goTo: "Fight", onFinish: "end" }],
     image: "./images/throne.jpg",
   },
   bossRoom2: {
     ennemy: ainz,
     description:
-      "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br></br>-'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+      "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br>-'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Fight", goTo: "Fight" }],
     image: "./images/throne.jpg",
   },
@@ -167,6 +167,12 @@ function startGame() {
   currentStep = "start";
   game = scenario[currentStep];
 }
+// function endgame, to reset hp
+// function endGame() {
+//   if (game == gameover) {
+//     player.health === 100;
+//   }
+// }
 
 function drawStep() {
   currentImage.style.backgroundImage = "url(./" + game.image + ")";
@@ -224,8 +230,6 @@ function fight(ennemy) {
   } else {
   }
 }
-
-
 
 startGame();
 drawStep(game);
