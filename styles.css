@@ -65,18 +65,26 @@ h1 {
   color: white;
 }
 b {
-  color: yellow;
+  color: #301658;
 }
 .item {
   color: red;
 }
 
 .green {
-  color: green;
+  color: rgb(13, 211, 13);
 }
 .yellow {
   color: yellow;
 }
 .red {
   color: red;
+}
+.location {
+  color: goldenrod;
+  font-weight: bold;
+}
+.ennemy {
+  color: black;
+  font-weight: bold;
 }

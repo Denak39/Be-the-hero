@@ -47,7 +47,7 @@ const ainz = {
   name: "Lord Ainz Ooal Gown",
   diceSides: 6,
   description:
-    "The Overlord approaches. You can feel his murderous aura overwhelming you. <br> You feel the potion's effects. Good timing, as you will need all your strength to defeat the Overlord.",
+    "The Overlord approaches. You can feel his murderous aura overwhelming you. <br> ",
   image: "./images/overlord.jpg",
 };
 
@@ -61,8 +61,7 @@ const items = {
 let scenario = {
   start: {
     steps: [{ display: "Start game", goTo: "dungeonDoor" }],
-    description:
-      "You are a <b>mercenary</b>. Your life hasn't been easy. You grew up alone, surviving by eating tavern leftovers right off the trash bin. You had to constantly fight for your life, and as such, grew stronger. You are now considered as one of the greatest warriors to have ever stepped foot in the kingdom of Alamur. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place.",
+    description: `You are a <b>mercenary</b>. Your life hasn't been easy. You grew up alone, surviving by eating tavern leftovers right off the trash bin. You had to constantly fight for your life, and as such, grew stronger. You are now considered as one of the greatest warriors to have ever stepped foot in the <span class="location">kingdom of Alamur</span>. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place.`,
     image: "./images/merc5.jpg",
   },
   dungeonDoor: {
@@ -82,8 +81,7 @@ let scenario = {
   },
   hallway: {
     ennemy: goblin,
-    description:
-      "You push the door and a long corridor appears in front of you. There isn’t much light, you can barely see. You walk slowly, trying to look for traps. Suddenly, you hear laughters, but not the usual friendly banter you hear at the tavern. These laughters are evil.... GOBLINS! You draw your sword instinctively. You don’t have much time to react, what do you do?",
+    description: `You push the door and a long corridor appears in front of you. There isn’t much light, you can barely see. You walk slowly, trying to look for traps. Suddenly, you hear laughters, but not the usual friendly banter you hear at the tavern. These laughters are evil.... <span class="ennemy">GOBLINS!</span> You draw your sword instinctively. You don’t have much time to react, what do you do?`,
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "kitchenLabo" },
       {
@@ -95,8 +93,7 @@ let scenario = {
   },
   kitchenLabo: {
     ennemy: golem,
-    description:
-      "The goblin drowning in its own intestines, you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing golem is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.",
+    description: `The goblin drowning in its own intestines, you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing <span class="ennemy">golem</span> is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.`,
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "bedroom" },
       { display: "Try to sneak past the golem", goTo: "bedroom2" },
@@ -105,8 +102,7 @@ let scenario = {
   },
   kitchenLabo2: {
     ennemy: golem,
-    description:
-      "You sneak past the goblin while he is staring at a fire and you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing golem is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.",
+    description: `You sneak past the goblin while he is staring at a fire and you proceed to climb the stairs at the end of corridor. You arrive at what seems to be a mix of a kitchen and a laboratory. An imposing <span class="ennemy">golem</span> is in the middle. He is facing the other way, and as a consequence hasn't noticed you...yet.`,
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "bedroom" },
       { display: "Try to sneak past the golem", goTo: "bedroom2" },
@@ -115,8 +111,7 @@ let scenario = {
   },
   bedroom: {
     ennemy: minotaur,
-    description:
-      "The golem dead, you proceed through the only door of the room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
+    description: `The golem dead, you proceed through the only door of the room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be <span class="ennemy">Lord Ainz Ooal Gown</span>'s room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a 5-feet tall <span class="ennemy">Minotaur</span> stands before you...`,
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "bossRoom" },
       { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
@@ -125,8 +120,7 @@ let scenario = {
   },
   bedroom2: {
     ennemy: minotaur,
-    description:
-      "You proceed to carefully cross the room while sticking to the walls. You manage to reach the next room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
+    description: `You proceed to carefully cross the room while sticking to the walls. You manage to reach the next room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be <span class="ennemy">Lord Ainz Ooal Gown</span>'s room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a 5-feet tall <span class="ennemy">Minotaur</span> stands before you...`,
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "bossRoom" },
       { display: "Try to sneak past the minotaur", goTo: "bossRoom2" },
@@ -135,21 +129,18 @@ let scenario = {
   },
   bossRoom: {
     ennemy: ainz,
-    description:
-      "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br>-'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+    description: `The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br>-<i>'Congratulations on making it this far, but this is where your adventure ends.'</i> <br>As you try to process what’s happening, <span class="ennemy">Lord AInz Ooal Gown</span> appears before you. There is no way out. You have to fight for your life.<br>You feel the <span class=\"item\">potion</span>'s effects. Good timing, as you will need all your strength to defeat the Overlord.`,
     steps: [{ display: "Continue", goTo: "Fight", onFinish: "end" }],
     image: "./images/throne.jpg",
   },
   bossRoom2: {
     ennemy: ainz,
-    description:
-      "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br>-'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
+    description: `You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head.<br>-<i>'Congratulations on making it this far, but this is where your adventure ends.'</i> <br>As you try to process what’s happening, <span class="ennemy">Lord AInz Ooal Gown</span> appears before you. There is no way out. You have to fight for your life. <br>You feel the <span class=\"item\">potion</span>'s effects. Good timing, as you will need all your strength to defeat the Overlord.`,
     steps: [{ display: "Fight", goTo: "Fight" }],
     image: "./images/throne.jpg",
   },
   end: {
-    description:
-      "After hours of battle, you finally manage to put the Overlord on his knees. He looks up to you as if he had been waiting for this moment his whole life. With a swift hit, you put an end to his reign of terror. Now all that's left to do is return to king Maverick to claim your price and glory.",
+    description: `After hours of battle, you finally manage to put the <span class="ennemy">Overlord</span> on his knees. He looks up to you as if he had been waiting for this moment his whole life. With a swift hit, you put an end to his reign of terror. Now all that's left to do is return to king Maverick to claim your price and glory.`,
     steps: [{ display: "Restart game", goTo: "start" }],
     image: "./images/gratz.jpg",
   },
@@ -313,7 +304,7 @@ function attackGoblin() {
     if (game.ennemy == minotaur && minotaur.health <= 0) {
       drinkPotion();
       text =
-        "You found a red <span class=\"item\">potion</span> on the gobelin. You've been on enough adventures to know that this gives health back so you drink it. You drink it, but you don't feel anything. It might have some kind of delay.";
+        "You found a red <span class=\"item\">potion</span> on the corpse. You've been on enough adventures to know that this gives health back so you drink it. You drink it, but you don't feel anything. It might have some kind of delay.";
     }
     currentRoomElement.innerHTML += `<button name="${game.steps[0].onFinish}" id="continuebtn">Continue</button>`;
     document.getElementById("continuebtn").onclick = function (event) {
