@@ -64,3 +64,19 @@ h1 {
   text-align: center;
   color: white;
 }
+b {
+  color: yellow;
+}
+.item {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+.yellow {
+  color: yellow;
+}
+.red {
+  color: red;
+}

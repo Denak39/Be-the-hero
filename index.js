@@ -62,7 +62,7 @@ let scenario = {
   start: {
     steps: [{ display: "Start game", goTo: "dungeonDoor" }],
     description:
-      "You are a mercenary. Your life hasn't been easy. You grew up alone, surviving by eating tavern leftovers right off the trash bin. You had to constantly fight for your life, and as such, grew stronger. You are now considered as one of the greatest warriors to have ever stepped foot in the kingdom of Alamur. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place.",
+      "You are a <b>mercenary</b>. Your life hasn't been easy. You grew up alone, surviving by eating tavern leftovers right off the trash bin. You had to constantly fight for your life, and as such, grew stronger. You are now considered as one of the greatest warriors to have ever stepped foot in the kingdom of Alamur. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place.",
     image: "./images/merc5.jpg",
   },
   dungeonDoor: {
@@ -174,10 +174,10 @@ function startGame() {
 
 function drawStep() {
   currentImage.style.backgroundImage = "url(./" + game.image + ")";
-  const hp = document.getElementById("health-bar");
   if (currentStep !== "start") {
-    hp.innerHTML = "<span>" + player.health + " player hp left" + "</span>";
+    updatePLayerHealth();
   } else {
+    const hp = document.getElementById("health-bar");
     hp.innerHTML = "";
   }
   currentRoomElement.innerHTML = "";
@@ -243,6 +243,24 @@ function fight(ennemy) {
   }
 }
 
+function updatePLayerHealth() {
+  const hp = document.getElementById("health-bar");
+  let healthColor = "green";
+  if (player.health < 70) {
+    healthColor = "yellow";
+  }
+  if (player.health < 30) {
+    healthColor = "red";
+  }
+  hp.innerHTML =
+    '<span class="' +
+    healthColor +
+    '">' +
+    player.health +
+    " player hp left" +
+    "</span>";
+}
+
 startGame();
 drawStep(game);
 
@@ -276,8 +294,7 @@ function attackGoblin() {
   const ennemyDice = parseFloat(rollDice(game.ennemy.diceSides));
   game.ennemy.health -= playerDice;
   player.health -= ennemyDice;
-  const hp = document.getElementById("health-bar");
-  hp.innerHTML = "<span>" + player.health + " player hp left" + "</span>";
+  updatePLayerHealth();
   // console.log(player.health);
   if (player.health <= 0) {
     currentRoomElement.innerHTML += `<button name="gameover" id="continuebtn">Continue</button>`;
@@ -296,7 +313,7 @@ function attackGoblin() {
     if (game.ennemy == minotaur && minotaur.health <= 0) {
       drinkPotion();
       text =
-        "You found a red potion on the gobelin. You've been on enough adventures to know that this gives health back so you drink it. You drink it, but you don't feel anything. It might have some kind of delay.";
+        "You found a red <span class=\"item\">potion</span> on the gobelin. You've been on enough adventures to know that this gives health back so you drink it. You drink it, but you don't feel anything. It might have some kind of delay.";
     }
     currentRoomElement.innerHTML += `<button name="${game.steps[0].onFinish}" id="continuebtn">Continue</button>`;
     document.getElementById("continuebtn").onclick = function (event) {
