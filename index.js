@@ -43,7 +43,7 @@ const ainz = {
   name: "Lord Ainz Ooal Gown",
   diceSides: 6,
   description:
-    "The Overlord approaches. You can feel his murderous aura overwhelming you.",
+    "The Overlord approaches. You can feel his murderous aura overwhelming you. <br> You feel the potion's effects. Good timing, as you will need all your strength to defeat the Overlord.",
   image: "./images/overlord.jpg",
 };
 
@@ -59,7 +59,7 @@ let scenario = {
     steps: [{ display: "Start game", goTo: "dungeonDoor" }],
     description:
       "You are a mercenary. Your life hasn't been easy. You grew up alone, surviving by eating tavern leftovers right off the trash bin. You had to constantly fight for your life, and as such, grew stronger. You are now considered as one of the greatest warriors to have ever stepped foot in the kingdom of Alamur. You’ve been hired by King Maverick to kill Lord Ainz Ooal Gown, the Master of this place.",
-    image: "./images/merc2.jpg",
+    image: "./images/merc5.jpg",
   },
   dungeonDoor: {
     steps: [
@@ -222,17 +222,10 @@ function fight(ennemy) {
     let atkbtn = document.getElementById("atkbtn");
     attachLink("attackGoblin", attackGoblin);
   } else {
-    // currentRoomElement.innerHTML += "<button>Continue</button>";
   }
 }
 
-/*
-  function setNextStep(next) {
-    //if (game.ennemy) console.log(game.ennemy);
-    currentStep = scenario[currentStep].steps[next];
-    game = scenario[currentStep];
-  }
-   */
+
 
 startGame();
 drawStep(game);
