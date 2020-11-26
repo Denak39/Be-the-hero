@@ -5,7 +5,7 @@ const currentImage = document.getElementById("main-box");
 const player = {
   health: 100,
   name: "default player",
-  diceSides: 6,
+  diceSides: 60,
 };
 
 const goblin = {
@@ -44,6 +44,7 @@ const ainz = {
   diceSides: 6,
   description:
     "The Overlord approaches. You can feel his murderous aura overwhelming you.",
+  image: "./images/overlord.jpg",
 };
 
 const items = {
@@ -84,7 +85,6 @@ let scenario = {
       {
         display: "Try to sneak past the goblin",
         goTo: "kitchenLabo2",
-        onFinish: "dodge",
       },
     ],
     image: "images/Hallway.jpg",
@@ -112,7 +112,7 @@ let scenario = {
   bedroom: {
     ennemy: minotaur,
     description:
-      "The weird golem scientist dead, you proceed through the only door of the room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
+      "The golem dead, you proceed through the only door of the room. A giant bed, a crystal ball to stay up to date on events around the world ... this must be Lord Ainz Ooal Gown's room. At the bed's foot you see a chest. You try to open it thinking there MUST be some great loot, you know, considering Ainz is the most powerful yatti yatta... As you approach the chest, a light starts emitting from it, totally blinding you. When you can finally open your eyes, a freakin Minotaur stands before you...",
     steps: [
       { display: "Fight", goTo: "Fight", onFinish: "bossRoom" },
       { display: "Try to sneak past the minotaur", goTo: "bossroom2" },
@@ -134,17 +134,18 @@ let scenario = {
     description:
       "The moment you deal the fatal blow to the beast, you’re teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Continue", goTo: "Fight", onFinish: "end" }],
-    image: "./images/bedroom.jpg",
+    image: "./images/throne.jpg",
   },
   bossRoom2: {
     ennemy: ainz,
     description:
       "You ran past the minotaur by going under him, and as you put your hand on the doorknob, you are teleported to a huge room. At the very end, you can see an imposing silhouette. Suddenly, you hear a voice in your head. -'Congratulations on making it this far, but this is where your adventure ends.' As you try to process what’s happening, Lord AInz Ooal Gown appears before you. There is no way out. You have to fight for your life.",
     steps: [{ display: "Fight", goTo: "Fight" }],
-    image: "./images/bedroom.jpg",
+    image: "./images/throne.jpg",
   },
   end: {
-    steps: [],
+    description: "gratz",
+    steps: [{ display: "Restart game", goTo: "start" }],
   },
 };
 
@@ -219,7 +220,7 @@ function fight(ennemy) {
     let atkbtn = document.getElementById("atkbtn");
     attachLink("attackGoblin", attackGoblin);
   } else {
-    currentRoomElement.innerHTML += "<button>Continue</button>";
+    // currentRoomElement.innerHTML += "<button>Continue</button>";
   }
 }
 
@@ -277,10 +278,9 @@ function attackGoblin() {
     items.potion.amount += 1;
     atkbtn.style.display = "none";
 
-    currentRoomElement.innerHTML +=
-      '<button name="bedroom" id="continuebtn">Continue</button>';
-    document.getElementById("continuebtn").onclick = function () {
-      changeRoom(afterFight);
+    currentRoomElement.innerHTML += `<button name="${game.steps[0].onFinish}" id="continuebtn">Continue</button>`;
+    document.getElementById("continuebtn").onclick = function (event) {
+      changeRoom(event.target.name);
     };
   }
   updateText("fightResult", text);
