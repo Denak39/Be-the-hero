@@ -74,7 +74,7 @@ let scenario = {
     steps: [{ display: "Restart game", goTo: "start" }],
     description:
       "You failed! You let down king Maverick, and the kingdom. Your memory will fade into darkness, and your name will remain a fainting echo in the everlasting eternity",
-    image: "./images/gameover.png",
+    image: "./images/gameover2.png",
   },
   hallway: {
     ennemy: goblin,
@@ -268,7 +268,7 @@ function attackGoblin() {
   game.ennemy.health -= playerDice;
   player.health -= ennemyDice;
   const hp = document.getElementById("health-bar");
-  hp.innerHTML = "<span>" + player.health + "hp left" + "</span>";
+  hp.innerHTML = "<span>" + player.health + " player hp left" + "</span>";
   // console.log(player.health);
   if (player.health <= 0) {
     currentRoomElement.innerHTML += `<button name="gameover" id="continuebtn">Continue</button>`;
@@ -279,8 +279,7 @@ function attackGoblin() {
   }
   let text = `You dealt ${playerDice} damage<br>
   ${game.ennemy.name} has ${game.ennemy.health} health remaining<br>
-  You received ${ennemyDice} damage<br>
-  You have ${player.health} health remaining`;
+  You received ${ennemyDice} damage<br>`;
   if (game.ennemy.health <= 0) {
     text = "You defeated your opponent";
     items.potion.amount += 1;
