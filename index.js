@@ -3,7 +3,7 @@ const currentRoomElement = document.getElementById("current-room");
 const currentImage = document.getElementById("main-box");
 
 const player = {
-  health: 120,
+  health: 100,
   name: "default player",
   diceSides: 6,
 };
@@ -284,6 +284,11 @@ function attackGoblin() {
     text = "You defeated your opponent";
     items.potion.amount += 1;
     atkbtn.style.display = "none";
+    if (game.ennemy == minotaur && minotaur.health <= 0) {
+      drinkPotion();
+      text =
+        "You found a red potion on the gobelin. You've been on enough adventures to know that this gives health back so you drink it. You drink it, but you don't feel anything. It might have some kind of delay.";
+    }
     currentRoomElement.innerHTML += `<button name="${game.steps[0].onFinish}" id="continuebtn">Continue</button>`;
     document.getElementById("continuebtn").onclick = function (event) {
       changeRoom(event.target.name);
